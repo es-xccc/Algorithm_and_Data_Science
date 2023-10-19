@@ -1,4 +1,5 @@
 C:\Github_Repo\Computational_Thinking_and_Problem_Solving\ex2\venv\Scripts\python.exe C:\Github_Repo\Computational_Thinking_and_Problem_Solving\ex2\main.py 
+Greedy 使用 discount / price
 Total number of items taken is 17
   <列表機, price:1520, original price:2280, discount:760>
   <太陽眼鏡, price:2090, original price:3420, discount:1330>
@@ -17,10 +18,11 @@ Total number of items taken is 17
   <床單, price:302, original price:1512, discount:1209>
   <運動鞋, price:505, original price:2658, discount:2153>
   <水族箱, price:190, original price:1250, discount:1060>
-Total price of items taken is 29266.0
-Total discount of items taken is 21143.0
+Total price of items taken is 29266
+Total discount of items taken is 21143
 greedy cost time:0.0000000000
 ----------------------------------------
+Optimal 使用 Powerset
 Total number of items taken is 16
 <紳士鞋, price:528, original price:1406, discount:878>
 <平板保護套, price:760, original price:1900, discount:1140>
@@ -38,8 +40,8 @@ Total number of items taken is 16
 <泳衣, price:838, original price:2052, discount:1214>
 <遊戲機, price:988, original price:2470, discount:1482>
 <吹風機, price:798, original price:2280, discount:1482>
-Total price of items taken is 29847.0
-Total discount of items taken is 21288.0
-optimal cost time:38.0729947090
+Total price of items taken is 29847
+Total discount of items taken is 21288
+optimal cost time:40.7451288700
 
 Process finished with exit code 0

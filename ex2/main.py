@@ -41,7 +41,7 @@ def greedy(itemlist1, maxPri):
         keyFunction maps elements of Items to numbers"""
     itemsCopy = sorted(itemlist1, reverse=True)
     result = []
-    total_discount, total_price = 0.0, 0.0
+    total_discount, total_price = 0, 0
     for i in range(len(itemsCopy)):
         if (total_price + itemsCopy[i].price) <= maxPri:
             result.append(itemsCopy[i])
@@ -51,6 +51,7 @@ def greedy(itemlist1, maxPri):
 
 
 def testGreedy(items1, max_price):
+    print('Greedy 使用 discount / price')
     taken, dis_sum, pri_sum = greedy(items1, max_price)
     print('Total number of items taken is', len(taken))
     for item in taken:
@@ -60,12 +61,12 @@ def testGreedy(items1, max_price):
 
 
 def chooseBest(pset, maxPri):
-    bestDis = 0.0
-    bestPri = 0.0
+    bestDis = 0
+    bestPri = 0
     bestSet = None
     for items in pset:
-        itemsDis = 0.0
-        itemsPri = 0.0
+        itemsDis = 0
+        itemsPri = 0
         for item in items:
             itemsDis += item.discount
             itemsPri += item.price
@@ -106,6 +107,7 @@ def genPowerset(L):
 
 
 def testBest(items1, max_price):
+    print('Optimal 使用 Powerset')
     pset = genPowerset(items1)
     taken, dis_sum, pri_sum = chooseBest(pset, max_price)
     print('Total number of items taken is', len(taken))
