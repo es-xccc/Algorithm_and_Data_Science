@@ -52,10 +52,11 @@ def greedy(itemlist1, maxPri):
 
 def testGreedy(items1, max_price):
     taken, dis_sum, pri_sum = greedy(items1, max_price)
-    print('Total price of items taken is', pri_sum)
-    print('Total discount of items taken is', dis_sum)
+    print('Total number of items taken is', len(taken))
     for item in taken:
         print(' ', item)
+    print('Total price of items taken is', pri_sum)
+    print('Total discount of items taken is', dis_sum)
 
 
 def chooseBest(pset, maxPri):
@@ -107,10 +108,11 @@ def genPowerset(L):
 def testBest(items1, max_price):
     pset = genPowerset(items1)
     taken, dis_sum, pri_sum = chooseBest(pset, max_price)
-    print('Total price of items taken is', pri_sum)
-    print('Total discount of items taken is', dis_sum)
+    print('Total number of items taken is', len(taken))
     for item in taken:
         print(item)
+    print('Total price of items taken is', pri_sum)
+    print('Total discount of items taken is', dis_sum)
 
 
 buildItems()
