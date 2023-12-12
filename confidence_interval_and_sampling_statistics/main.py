@@ -94,6 +94,7 @@ y_std_dev1 = norm.pdf(sample_means[0] + standard_errors[0], sample_means[0], sam
 y_std_dev2 = norm.pdf(sample_means[0] - standard_errors[0], sample_means[0], sample_std_devs[0])
 plt.plot([sample_means[0] + standard_errors[0], sample_means[0] + standard_errors[0]], [0, y_std_dev1], color='red', linestyle='dashed')
 plt.plot([sample_means[0] - standard_errors[0], sample_means[0] - standard_errors[0]], [0, y_std_dev2], color='red', linestyle='dashed')
-plt.plot([mean, mean], [0, y_mean], color='black')
+y_mean = norm.pdf(mean, sample_means[0], sample_std_devs[0])
+plt.plot([mean, mean], [0, y_mean], color='black', label='Mean={:.2f}, SD={:.2f}'.format(mean, std_dev))
 plt.legend()
 plt.savefig('Normal Distribution for 50 sample size.png')
