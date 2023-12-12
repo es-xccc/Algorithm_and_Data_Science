@@ -63,17 +63,24 @@ for size in sample_sizes:
     estimated_standard_errors.append(sample_std_dev / np.sqrt(size))
 
 offset = 10
+standard_error_percentages = [error / mean * 100 * 2 for error in standard_errors]
+estimated_standard_error_percentages = [error / mean * 100 * 2 for error in estimated_standard_errors]
 plt.figure()
-plt.errorbar([size - offset for size in sample_sizes], sample_means, yerr=standard_errors, fmt='o', label='Standard Error')
-plt.errorbar(sample_sizes, sample_means, yerr=estimated_standard_errors, fmt='o', label='Estimated Standard Error')
+x_values = [50, 200, 500]
+y_values = [error / sample_mean * 100 + sample_mean for error, sample_mean in zip(standard_errors, sample_means)]
+for x, y, percentage in zip(x_values, y_values, standard_error_percentages):
+    plt.text(x, y, str(round(percentage, 2)) + '%', color='orange')
+y_values = [- error / sample_mean * 100 + sample_mean for error, sample_mean in zip(estimated_standard_errors, sample_means)]
+for x, y, percentage in zip(x_values, y_values, estimated_standard_error_percentages):
+    plt.text(x, y, str(round(percentage, 2)) + '%', color='blue')
+plt.errorbar([size - offset for size in sample_sizes], sample_means, yerr=standard_errors, fmt='o', label='95% SE confidence interval')
+plt.errorbar(sample_sizes, sample_means, yerr=estimated_standard_errors, fmt='o-', label='95% Estimated SE confidence interval')
+plt.axhline(y=mean, color='blue', linestyle='--', label='True mean')
+plt.title('Estimated of Mean Scores')
 plt.xlabel('Sample Size')
 plt.ylabel('Scores')
-plt.xlim(0, 700)
 plt.xticks(np.arange(0, 700, 100))
-plt.ylim(66, 72)
-plt.yticks(np.arange(66, 72, 1))
+plt.yticks(np.arange(65, 75, 1))
 plt.legend()
 plt.savefig('Estimated of Mean Scores.png')
 
-standard_error_percentages = [error / mean * 100 for error in standard_errors]
-estimated_standard_error_percentages = [error / mean * 100 for error in estimated_standard_errors]
