@@ -1,0 +1,17 @@
+Test k-means (k = 2)
+Cluster of size 224 with fraction of death positives = 0.2902 and 65 death.
+Cluster of size 26 with fraction of death positives = 0.6923 and 18 death.
+--------------------------------------------------
+Test k-means (k = 3)
+Cluster of size 147 with fraction of death positives = 0.0680 and 10 death.
+Cluster of size 77 with fraction of death positives = 0.7143 and 55 death.
+Cluster of size 26 with fraction of death positives = 0.6923 and 18 death.
+--------------------------------------------------
+Test k-means (k = 4)
+Cluster of size 86 with fraction of death positives = 0.0814 and 7 death.
+Cluster of size 76 with fraction of death positives = 0.7105 and 54 death.
+Cluster of size 62 with fraction of death positives = 0.0645 and 4 death.
+Cluster of size 26 with fraction of death positives = 0.6923 and 18 death.
+
+即使第一個cluster的fraction of death positives較低，但由於其cluster size較大，所以實際的死亡數量仍然較高。原因可能是第一個cluster中包含了太多的患者，並且這些patient的特徵差異較大，使該cluster的死亡率被稀釋。
+要改進這個結果，可以增加cluster數量，使得每個cluster更小，更能反映出patient的特徵，我實測k = 3時就能有明顯改進，而k = 4時並無更好。
