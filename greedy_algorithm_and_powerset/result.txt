@@ -1,0 +1,47 @@
+C:\Github_Repo\Computational_Thinking_and_Problem_Solving\ex2\venv\Scripts\python.exe C:\Github_Repo\Computational_Thinking_and_Problem_Solving\ex2\main.py 
+Greedy 使用 discount / price
+Total number of items taken is 17
+  <列表機, price:1520, original price:2280, discount:760>
+  <太陽眼鏡, price:2090, original price:3420, discount:1330>
+  <有線耳機, price:3420, original price:5700, discount:2280>
+  <無限喇叭, price:3800, original price:7562, discount:3762>
+  <泳衣, price:838, original price:2052, discount:1214>
+  <平板保護套, price:760, original price:1900, discount:1140>
+  <藍芽耳機, price:1976, original price:4940, discount:2964>
+  <遊戲機, price:988, original price:2470, discount:1482>
+  <炭板跑鞋, price:1319, original price:3418, discount:2099>
+  <滑板, price:874, original price:2280, discount:1406>
+  <紳士鞋, price:528, original price:1406, discount:878>
+  <吹風機, price:798, original price:2280, discount:1482>
+  <運動服, price:513, original price:2052, discount:1539>
+  <慢跑鞋, price:722, original price:3230, discount:2508>
+  <床單, price:302, original price:1512, discount:1209>
+  <運動鞋, price:505, original price:2658, discount:2153>
+  <水族箱, price:190, original price:1250, discount:1060>
+Total price of items taken is 29266
+Total discount of items taken is 21143
+greedy cost time:0.0000000000
+----------------------------------------
+Optimal 使用 Powerset
+Total number of items taken is 16
+<紳士鞋, price:528, original price:1406, discount:878>
+<平板保護套, price:760, original price:1900, discount:1140>
+<有線耳機, price:3420, original price:5700, discount:2280>
+<列表機, price:1520, original price:2280, discount:760>
+<太陽眼鏡, price:2090, original price:3420, discount:1330>
+<炭板跑鞋, price:1319, original price:3418, discount:2099>
+<慢跑鞋, price:722, original price:3230, discount:2508>
+<運動手錶, price:637, original price:3487, discount:2850>
+<無限喇叭, price:3800, original price:7562, discount:3762>
+<運動服, price:513, original price:2052, discount:1539>
+<運動鞋, price:505, original price:2658, discount:2153>
+<藍芽耳機, price:1976, original price:4940, discount:2964>
+<滑板, price:874, original price:2280, discount:1406>
+<泳衣, price:838, original price:2052, discount:1214>
+<遊戲機, price:988, original price:2470, discount:1482>
+<吹風機, price:798, original price:2280, discount:1482>
+Total price of items taken is 29847
+Total discount of items taken is 21288
+optimal cost time:40.7451288700
+
+Process finished with exit code 0
