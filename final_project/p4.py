@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
+from sklearn.preprocessing import StandardScaler
 
 pas_class = []
 pas_age = []
@@ -16,9 +17,12 @@ with open('TitanicPassengers.txt', 'r') as file:
         pas_age.append(float(val[1]))
         pas_survived.append(int(val[3]))
 
-# Convert lists to numpy arrays
 X = np.array([pas_class, pas_age]).T
 y = np.array(pas_survived)
+
+scaler = StandardScaler()
+
+X = scaler.fit_transform(X)
 
 weights = []
 accuracies = []
@@ -86,6 +90,7 @@ plt.savefig('Maximum Accuracies.png')
 
 cor_counts = []
 
+# Threshold values
 k_values = np.linspace(0.4, 0.6, 10)
 
 for k in k_values:
@@ -113,11 +118,11 @@ max_accuracy_k = k_values[max_accuracy_index]
 max_accuracy = accuracies[max_accuracy_index]
 
 plt.figure()
-plt.plot(k_values, accuracies, label='Mean Accuracies')  # add label
-plt.plot(max_accuracy_k, max_accuracy, 'ro', label='Max Mean Accuracies')  # add label
-plt.annotate(f'({max_accuracy_k:.2f}, {max_accuracy:.2f})', (max_accuracy_k, max_accuracy), textcoords="offset points", xytext=(-10,-10), ha='center')  # annotate the coordinate
+plt.plot(k_values, accuracies, label='Mean Accuracies')
+plt.plot(max_accuracy_k, max_accuracy, 'ro', label='Max Mean Accuracies')
+plt.annotate(f'({max_accuracy_k:.2f}, {max_accuracy:.2f})', (max_accuracy_k, max_accuracy), textcoords="offset points", xytext=(-10,-10), ha='center')
 plt.xlabel('Threshold Values k')
 plt.ylabel('Accuracy')
 plt.title('Mean Accuracies for Different Threshold Values')
-plt.legend()  # show legend
+plt.legend()
 plt.savefig('Mean Accuracies for Different Threshold Values.png')

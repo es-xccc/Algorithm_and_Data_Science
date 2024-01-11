@@ -26,13 +26,10 @@ male_survived_age = [male_age[i] for i in range(len(male_age)) if male_survived[
 
 bins = 20
 
-# Calculate mean and standard deviation
 male_age_mean = np.mean(male_age)
 male_age_std = np.std(male_age)
 male_survived_age_mean = np.mean(male_survived_age)
 male_survived_age_std = np.std(male_survived_age)
-
-# Create labels with mean and std
 all_male_label = 'All Male Passengers\nMean = {:.2f} SD = {:.2f}'.format(male_age_mean, male_age_std)
 survived_male_label = 'Survived Male Passengers\nMean = {:.2f} SD = {:.2f}'.format(male_survived_age_mean, male_survived_age_std)
 
@@ -50,13 +47,11 @@ female_survived_age = [female_age[i] for i in range(len(female_age)) if female_s
 
 bins = 20
 
-# Calculate mean and standard deviation
 female_age_mean = np.mean(female_age)
 female_age_std = np.std(female_age)
 female_survived_age_mean = np.mean(female_survived_age)
 female_survived_age_std = np.std(female_survived_age)
 
-# Create labels with mean and std
 all_female_label = 'All Female Passengers\nMean = {:.2f} SD = {:.2f}'.format(female_age_mean, female_age_std)
 survived_female_label = 'Survived Female Passengers\nMean = {:.2f} SD = {:.2f}'.format(female_survived_age_mean, female_survived_age_std)
 
@@ -77,7 +72,6 @@ female_survived_class = [female_class[i] for i in range(len(female_class)) if fe
 
 bins = 3
 
-# Male passengers
 plt.figure()
 plt.hist(male_class, bins=bins, edgecolor='black')
 plt.hist(male_survived_class, bins=bins, edgecolor='black')
@@ -87,7 +81,6 @@ plt.title('Male Cabin Classes and Survived')
 plt.xticks([1, 2, 3])  # Set x-axis ticks
 plt.savefig('Male Cabin Classes and Survived.png')
 
-# Female passengers
 plt.figure()
 plt.hist(female_class, bins=bins, edgecolor='black')
 plt.hist(female_survived_class, bins=bins, edgecolor='black')

@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
+from sklearn.preprocessing import StandardScaler
 
 pas_class = []
 pas_age = []
@@ -12,13 +13,17 @@ with open('TitanicPassengers.txt', 'r') as file:
     lines = file.readlines()
     for line in lines:
         val = line.split(',')
-        pas_class.append(int(val[0]))
-        pas_age.append(float(val[1]))
-        pas_survived.append(int(val[3]))
+        if(val[2] == 'F'):
+            pas_class.append(int(val[0]))
+            pas_age.append(float(val[1]))
+            pas_survived.append(int(val[3]))
 
-# Convert lists to numpy arrays
 X = np.array([pas_class, pas_age]).T
 y = np.array(pas_survived)
+
+scaler = StandardScaler()
+
+X = scaler.fit_transform(X)
 
 weights = []
 accuracies = []
@@ -66,7 +71,7 @@ mean_auroc = np.mean(auroc)
 lower_auroc, upper_auroc = np.percentile(auroc, [2.5, 97.5])
 
 print('Logistic Regression:')
-print('Averages for all examples 1000 trials with k=0.5')
+print('Averages for Female examples 1000 trials with k=0.5')
 print('Mean weight of C1 = {}, Interval size = {}'.format(round(mean_weights[0], 3), round(upper_weights[0] - lower_weights[0], 3)))
 print('Mean weight of age = {}, Interval size = {}'.format(round(mean_weights[1], 3), round(upper_weights[1] - lower_weights[1], 3)))
 print('Mean accuracy = {}, Interval size = {}'.format(round(mean_accuracy, 3), round(upper_accuracy - lower_accuracy, 3)))
@@ -81,8 +86,8 @@ plt.figure()
 plt.hist(accuracies, bins=20, edgecolor='black')
 plt.xlabel('Maximum Accuracies')
 plt.ylabel('Numbers of Maximum Accuracies')
-plt.title('Maximum Accuracies')
-plt.savefig('Maximum Accuracies.png')
+plt.title('Female: Maximum Accuracies')
+plt.savefig('Female: Maximum Accuracies.png')
 
 cor_counts = []
 
@@ -97,8 +102,8 @@ plt.figure()
 plt.bar(k_values, cor_counts, width=0.01)
 plt.xlabel('Threshold Values k')
 plt.ylabel('Number of ks')
-plt.title('Threshold values k for Maximum Accuracies')
-plt.savefig('Threshold values k for Maximum Accuracies.png')
+plt.title('Female: Threshold values k for Maximum Accuracies')
+plt.savefig('Female: Threshold values k for Maximum Accuracies.png')
 
 k_values = np.linspace(0.4, 0.6, 21)
 accuracies = []
@@ -113,11 +118,11 @@ max_accuracy_k = k_values[max_accuracy_index]
 max_accuracy = accuracies[max_accuracy_index]
 
 plt.figure()
-plt.plot(k_values, accuracies, label='Mean Accuracies')  # add label
-plt.plot(max_accuracy_k, max_accuracy, 'ro', label='Max Mean Accuracies')  # add label
-plt.annotate(f'({max_accuracy_k:.2f}, {max_accuracy:.2f})', (max_accuracy_k, max_accuracy), textcoords="offset points", xytext=(-10,-10), ha='center')  # annotate the coordinate
+plt.plot(k_values, accuracies, label='Mean Accuracies')
+plt.plot(max_accuracy_k, max_accuracy, 'ro', label='Max Mean Accuracies')
+plt.annotate(f'({max_accuracy_k:.2f}, {max_accuracy:.2f})', (max_accuracy_k, max_accuracy), textcoords="offset points", xytext=(-10,-10), ha='center')
 plt.xlabel('Threshold Values k')
 plt.ylabel('Accuracy')
-plt.title('Mean Accuracies for Different Threshold Values')
-plt.legend()  # show legend
-plt.savefig('Mean Accuracies for Different Threshold Values.png')
+plt.title('Female: Mean Accuracies for Different Threshold Values')
+plt.legend()
+plt.savefig('Female: Mean Accuracies for Different Threshold Values.png')
