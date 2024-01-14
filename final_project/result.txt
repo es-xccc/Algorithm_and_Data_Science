@@ -1,30 +1,27 @@
 Logistic Regression:
 Averages for all examples 1000 trials with k=0.5
-Mean weight of C1 = -0.92, Interval size = 0.162
-Mean weight of age = -0.527, Interval size = 0.152
-Mean accuracy = 0.681, Interval size = 0.114
-Mean sensitivity = 0.496, Interval size = 0.206
-Mean specificity = 0.811, Interval size = 0.155
-Mean pos. pred. val. = 0.647, Interval size = 0.224
-Mean AUROC = 0.654, Interval size = 0.111
+Mean weight of C1 = 1.143, 95% confidence interval = 0.247
+Mean weight of C2 = -0.083, 95% confidence interval = 0.193
+Mean weight of C3 = -1.06, 95% confidence interval = 0.238
+Mean weight of age = -0.033,  95% confidence interval = 0.013
+Mean weight of Male Gender = -2.411, 95% CI = 0.298
+Mean accuracy = 0.781,  95% confidence interval = 0.1
+Mean sensitivity = 0.703,  95% confidence interval = 0.189
+Mean specificity = 0.837,  95% confidence interval = 0.127
+Mean pos. pred. val. = 0.749,  95% confidence interval = 0.184
+Mean AUROC = 0.77,  95% confidence interval = 0.107
 Logistic Regression:
-Averages for Male examples 1000 trials with k=0.5
-Mean weight of C1 = -0.64, Interval size = 0.228
-Mean weight of age = -0.617, Interval size = 0.242
-Mean accuracy = 0.802, Interval size = 0.129
-Mean sensitivity = 0.074, Interval size = 0.185
-Mean specificity = 0.992, Interval size = 0.03
-Mean pos. pred. val. = nan, Interval size = nan
-Mean AUROC = 0.533, Interval size = 0.094
-Logistic Regression:
-Averages for Female examples 1000 trials with k=0.5
-Mean weight of C1 = -1.652, Interval size = 0.415
-Mean weight of age = -0.263, Interval size = 0.328
-Mean accuracy = 0.769, Interval size = 0.167
-Mean sensitivity = 0.866, Interval size = 0.26
-Mean specificity = 0.492, Interval size = 0.608
-Mean pos. pred. val. = 0.839, Interval size = 0.223
-Mean AUROC = 0.679, Interval size = 0.242
+Averages for all examples 1000 trials with k=0.5
+Mean weight of C1 = 0.563, 95% confidence interval = 0.114
+Mean weight of C2 = -0.001, 95% confidence interval = 0.092
+Mean weight of C3 = -0.501, 95% confidence interval = 0.106
+Mean weight of age = -0.487,  95% confidence interval = 0.181
+Mean weight of Male Gender = -1.197, 95% CI = 0.142
+Mean accuracy = 0.782,  95% confidence interval = 0.095
+Mean sensitivity = 0.705,  95% confidence interval = 0.175
+Mean specificity = 0.835,  95% confidence interval = 0.119
+Mean pos. pred. val. = 0.748,  95% confidence interval = 0.187
+Mean AUROC = 0.77,  95% confidence interval = 0.099
 Confusion Matrix for k=3:
  [[120   0]
  [  0  90]]
@@ -32,7 +29,6 @@ Accuracy = 1.000
 Sensitivity = 1.000
 Specificity = 1.000
 Pos. Pred. Val. = 1.000
-PS C:\Github_Repo\Computational_Thinking_and_Problem_Solving\final_project> & c:/Github_Repo/Computational_Thinking_and_Problem_Solving/final_project/.venv/Scripts/python.exe c:/Github_Repo/Computational_Thinking_and_Problem_Solving/final_project/p6.py
 Confusion Matrix for k=3:
  [[83 37]
  [52 38]]

@@ -3,27 +3,31 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
-from sklearn.preprocessing import StandardScaler
+
 
 pas_class = []
 pas_age = []
+pas_gender = []
 pas_survived = []
 with open('TitanicPassengers.txt', 'r') as file:
     next(file)
     lines = file.readlines()
     for line in lines:
         val = line.split(',')
-        if(val[2] == 'F'):
-            pas_class.append(int(val[0]))
-            pas_age.append(float(val[1]))
-            pas_survived.append(int(val[3]))
+        pas_class.append(int(val[0]))
+        pas_age.append(float(val[1]))
+        if val[2] == 'M':
+            pas_gender.append(1)
+        else:
+            pas_gender.append(0)
+        pas_survived.append(int(val[3]))
 
-X = np.array([pas_class, pas_age]).T
+pas_class_onehot = np.zeros((len(pas_class), max(pas_class)))
+for i, c in enumerate(pas_class):
+    pas_class_onehot[i, c-1] = 1
+
+X = np.hstack((pas_class_onehot, np.array(pas_age).reshape(-1, 1), np.array(pas_gender).reshape(-1, 1)))
 y = np.array(pas_survived)
-
-scaler = StandardScaler()
-
-X = scaler.fit_transform(X)
 
 weights = []
 accuracies = []
@@ -31,6 +35,11 @@ sensitivities = []
 specificities = []
 ppv = []
 auroc = []
+max_accuracies = []
+optimal_ks = []
+optimal_k = 0.5
+max_accuracy = 0
+accuracies_for_k = {k: [] for k in np.linspace(0, 1, 101)}
 
 for _ in range(1000):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -49,6 +58,21 @@ for _ in range(1000):
     specificities.append(tn / (tn + fp))
     ppv.append(tp / (tp + fp))
     auroc.append(roc_auc_score(y_test, y_pred))
+    
+    optimal_k = 0.5
+    max_accuracy = 0
+
+    for k in np.linspace(0, 1, 101):
+        y_pred = (clf.predict_proba(X_test)[:,1] >= k).astype(int)
+        accuracy = accuracy_score(y_test, y_pred)
+        accuracies_for_k[k].append(accuracy)
+        if accuracy > max_accuracy:
+            max_accuracy = accuracy
+            optimal_k = k
+
+    optimal_ks.append(optimal_k)
+    max_accuracies.append(max_accuracy)
+
 
 weights = np.array(weights)
 
@@ -71,14 +95,29 @@ mean_auroc = np.mean(auroc)
 lower_auroc, upper_auroc = np.percentile(auroc, [2.5, 97.5])
 
 print('Logistic Regression:')
-print('Averages for Female examples 1000 trials with k=0.5')
-print('Mean weight of C1 = {}, Interval size = {}'.format(round(mean_weights[0], 3), round(upper_weights[0] - lower_weights[0], 3)))
-print('Mean weight of age = {}, Interval size = {}'.format(round(mean_weights[1], 3), round(upper_weights[1] - lower_weights[1], 3)))
-print('Mean accuracy = {}, Interval size = {}'.format(round(mean_accuracy, 3), round(upper_accuracy - lower_accuracy, 3)))
-print('Mean sensitivity = {}, Interval size = {}'.format(round(mean_sensitivity, 3), round(upper_sensitivity - lower_sensitivity, 3)))
-print('Mean specificity = {}, Interval size = {}'.format(round(mean_specificity, 3), round(upper_specificity - lower_specificity, 3)))
-print('Mean pos. pred. val. = {}, Interval size = {}'.format(round(mean_ppv, 3), round(upper_ppv - lower_ppv, 3)))
-print('Mean AUROC = {}, Interval size = {}'.format(round(mean_auroc, 3), round(upper_auroc - lower_auroc, 3)))
+print('Averages for all examples 1000 trials with k=0.5')
+print('Mean weight of C1 = {}, 95% confidence interval = {}'.format(round(mean_weights[0], 3), round(upper_weights[0] - lower_weights[0], 3)))
+print('Mean weight of C2 = {}, 95% confidence interval = {}'.format(round(mean_weights[1], 3), round(upper_weights[1] - lower_weights[1], 3)))
+print('Mean weight of C3 = {}, 95% confidence interval = {}'.format(round(mean_weights[2], 3), round(upper_weights[2] - lower_weights[2], 3)))
+print('Mean weight of age = {},  95% confidence interval = {}'.format(round(mean_weights[3], 3), round(upper_weights[3] - lower_weights[3], 3)))
+print('Mean weight of Male Gender = {}, 95% CI = {}'.format(round(mean_weights[4], 3), round(upper_weights[4] - lower_weights[4], 3)))
+print('Mean accuracy = {},  95% confidence interval = {}'.format(round(mean_accuracy, 3), round(upper_accuracy - lower_accuracy, 3)))
+print('Mean sensitivity = {},  95% confidence interval = {}'.format(round(mean_sensitivity, 3), round(upper_sensitivity - lower_sensitivity, 3)))
+print('Mean specificity = {},  95% confidence interval = {}'.format(round(mean_specificity, 3), round(upper_specificity - lower_specificity, 3)))
+print('Mean pos. pred. val. = {},  95% confidence interval = {}'.format(round(mean_ppv, 3), round(upper_ppv - lower_ppv, 3)))
+print('Mean AUROC = {},  95% confidence interval = {}'.format(round(mean_auroc, 3), round(upper_auroc - lower_auroc, 3)))
+
+mean_optimal_k = np.mean(optimal_ks)
+std_optimal_k = np.std(optimal_ks)
+mean_max_accuracy = np.mean(max_accuracies)
+std_max_accuracy = np.std(max_accuracies)
+
+plt.figure(figsize=(10, 6))
+plt.hist(optimal_ks, bins=20, range=(0.4, 0.6), edgecolor='black', label='k values for maximum accuracies\nMean ={:.2f} SD = {:.2f}'.format(mean_optimal_k, std_optimal_k))
+plt.xlabel('Threshold Values k')
+plt.ylabel('Number of ks')
+plt.title('Threshold values k for Maximum Accuracies')
+plt.savefig('Threshold values k for Maximum Accuracies.png')
 
 max_accuracies = np.max(accuracies)
 
@@ -86,32 +125,23 @@ plt.figure()
 plt.hist(accuracies, bins=20, edgecolor='black')
 plt.xlabel('Maximum Accuracies')
 plt.ylabel('Numbers of Maximum Accuracies')
-plt.title('Female: Maximum Accuracies')
-plt.savefig('Female: Maximum Accuracies.png')
-
-cor_counts = []
-
-k_values = np.linspace(0.4, 0.6, 10)
-
-for k in k_values:
-    y_pred = (clf.predict_proba(X_test)[:,1] >= k).astype(bool)
-
-    cor_counts.append(np.sum(y_pred == y_test))
-
-plt.figure()
-plt.bar(k_values, cor_counts, width=0.01)
-plt.xlabel('Threshold Values k')
-plt.ylabel('Number of ks')
-plt.title('Female: Threshold values k for Maximum Accuracies')
-plt.savefig('Female: Threshold values k for Maximum Accuracies.png')
+plt.title('Maximum Accuracies')
+plt.savefig('Maximum Accuracies.png')
 
 k_values = np.linspace(0.4, 0.6, 21)
-accuracies = []
+accuracies = np.zeros(len(k_values))
 
-for k in k_values:
-    y_pred = (clf.predict_proba(X_test)[:,1] >= k).astype(bool)
+for _ in range(1000):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-    accuracies.append(accuracy_score(y_test, y_pred))
+    clf = LogisticRegression()
+    clf.fit(X_train, y_train)
+
+    for i, k in enumerate(k_values):
+        y_pred = (clf.predict_proba(X_test)[:,1] >= k).astype(bool)
+        accuracies[i] += accuracy_score(y_test, y_pred)
+
+accuracies /= 1000
 
 max_accuracy_index = np.argmax(accuracies)
 max_accuracy_k = k_values[max_accuracy_index]
@@ -123,6 +153,6 @@ plt.plot(max_accuracy_k, max_accuracy, 'ro', label='Max Mean Accuracies')
 plt.annotate(f'({max_accuracy_k:.2f}, {max_accuracy:.2f})', (max_accuracy_k, max_accuracy), textcoords="offset points", xytext=(-10,-10), ha='center')
 plt.xlabel('Threshold Values k')
 plt.ylabel('Accuracy')
-plt.title('Female: Mean Accuracies for Different Threshold Values')
+plt.title('Mean Accuracies for Different Threshold Values')
 plt.legend()
-plt.savefig('Female: Mean Accuracies for Different Threshold Values.png')
+plt.savefig('Mean Accuracies for Different Threshold Values.png')

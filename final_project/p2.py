@@ -78,7 +78,7 @@ plt.hist(male_survived_class, bins=bins, edgecolor='black')
 plt.xlabel('Class')
 plt.ylabel('Number of Male Passengers')
 plt.title('Male Cabin Classes and Survived')
-plt.xticks([1, 2, 3])  # Set x-axis ticks
+plt.xticks([1, 2, 3])
 plt.savefig('Male Cabin Classes and Survived.png')
 
 plt.figure()
@@ -87,6 +87,6 @@ plt.hist(female_survived_class, bins=bins, edgecolor='black')
 plt.xlabel('Class')
 plt.ylabel('Number of Female Passengers')
 plt.title('Female Cabin Classes and Survived')
-plt.xticks([1, 2, 3])  # Set x-axis ticks
+plt.xticks([1, 2, 3])
 plt.savefig('Female Cabin Classes and Survived.png')
 
