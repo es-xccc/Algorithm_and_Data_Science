@@ -39,7 +39,7 @@ max_accuracies = []
 optimal_ks = []
 optimal_k = 0.5
 max_accuracy = 0
-accuracies_for_k = {k: [] for k in np.linspace(0, 1, 101)}
+accuracies_for_k = {k: [] for k in np.linspace(0, 1, 100)}
 
 for _ in range(1000):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -62,7 +62,7 @@ for _ in range(1000):
     optimal_k = 0.5
     max_accuracy = 0
 
-    for k in np.linspace(0, 1, 101):
+    for k in np.linspace(0, 1, 100):
         y_pred = (clf.predict_proba(X_test)[:,1] >= k).astype(int)
         accuracy = accuracy_score(y_test, y_pred)
         accuracies_for_k[k].append(accuracy)
@@ -128,7 +128,7 @@ plt.ylabel('Numbers of Maximum Accuracies')
 plt.title('Maximum Accuracies')
 plt.savefig('Maximum Accuracies.png')
 
-k_values = np.linspace(0.4, 0.6, 21)
+k_values = np.linspace(0.4, 0.6, 20)
 accuracies = np.zeros(len(k_values))
 
 for _ in range(1000):
