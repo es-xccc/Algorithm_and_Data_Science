@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
+from sklearn.preprocessing import MinMaxScaler
 
 
 pas_class = []
@@ -41,8 +42,17 @@ optimal_k = 0.5
 max_accuracy = 0
 accuracies_for_k = {k: [] for k in np.linspace(0, 1, 100)}
 
+scaler = MinMaxScaler()
+
 for _ in range(1000):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    # Fit on training set only.
+    scaler.fit(X_train)
+
+    # Apply transform to both the training set and the test set.
+    X_train = scaler.transform(X_train)
+    X_test = scaler.transform(X_test)
 
     clf = LogisticRegression()
 
@@ -94,7 +104,7 @@ lower_ppv, upper_ppv = np.percentile(ppv, [2.5, 97.5])
 mean_auroc = np.mean(auroc)
 lower_auroc, upper_auroc = np.percentile(auroc, [2.5, 97.5])
 
-print('Logistic Regression:')
+print('Logistic Regression with iScaling:')
 print('Averages for all examples 1000 trials with k=0.5')
 print('Mean weight of C1 = {}, 95% confidence interval = {}'.format(round(mean_weights[0], 3), round(upper_weights[0] - lower_weights[0], 3)))
 print('Mean weight of C2 = {}, 95% confidence interval = {}'.format(round(mean_weights[1], 3), round(upper_weights[1] - lower_weights[1], 3)))

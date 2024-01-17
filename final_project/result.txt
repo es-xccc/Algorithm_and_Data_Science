@@ -1,27 +1,41 @@
 Logistic Regression:
 Averages for all examples 1000 trials with k=0.5
-Mean weight of C1 = 1.143, 95% confidence interval = 0.247
-Mean weight of C2 = -0.083, 95% confidence interval = 0.193
-Mean weight of C3 = -1.06, 95% confidence interval = 0.238
-Mean weight of age = -0.033,  95% confidence interval = 0.013
-Mean weight of Male Gender = -2.411, 95% CI = 0.298
-Mean accuracy = 0.781,  95% confidence interval = 0.1
-Mean sensitivity = 0.703,  95% confidence interval = 0.189
-Mean specificity = 0.837,  95% confidence interval = 0.127
-Mean pos. pred. val. = 0.749,  95% confidence interval = 0.184
-Mean AUROC = 0.77,  95% confidence interval = 0.107
-Logistic Regression:
+Mean weight of C1 = 1.14, 95% confidence interval = 0.233
+Mean weight of C2 = -0.081, 95% confidence interval = 0.191
+Mean weight of C3 = -1.058, 95% confidence interval = 0.214
+Mean weight of age = -0.033,  95% confidence interval = 0.012
+Mean weight of Male Gender = -2.407, 95% CI = 0.294
+Mean accuracy = 0.783,  95% confidence interval = 0.1
+Mean sensitivity = 0.704,  95% confidence interval = 0.177
+Mean specificity = 0.838,  95% confidence interval = 0.127
+Mean pos. pred. val. = 0.75,  95% confidence interval = 0.181
+Mean AUROC = 0.771,  95% confidence interval = 0.105
+
+Logistic Regression with zScaling:
 Averages for all examples 1000 trials with k=0.5
-Mean weight of C1 = 0.563, 95% confidence interval = 0.114
-Mean weight of C2 = -0.001, 95% confidence interval = 0.092
-Mean weight of C3 = -0.501, 95% confidence interval = 0.106
-Mean weight of age = -0.487,  95% confidence interval = 0.181
-Mean weight of Male Gender = -1.197, 95% CI = 0.142
-Mean accuracy = 0.782,  95% confidence interval = 0.095
-Mean sensitivity = 0.705,  95% confidence interval = 0.175
-Mean specificity = 0.835,  95% confidence interval = 0.119
-Mean pos. pred. val. = 0.748,  95% confidence interval = 0.187
-Mean AUROC = 0.77,  95% confidence interval = 0.099
+Mean weight of C1 = 0.563, 95% confidence interval = 0.118
+Mean weight of C2 = -0.001, 95% confidence interval = 0.093
+Mean weight of C3 = -0.501, 95% confidence interval = 0.109
+Mean weight of age = -0.487,  95% confidence interval = 0.177
+Mean weight of Male Gender = -1.2, 95% CI = 0.149
+Mean accuracy = 0.781,  95% confidence interval = 0.095
+Mean sensitivity = 0.704,  95% confidence interval = 0.182
+Mean specificity = 0.834,  95% confidence interval = 0.131
+Mean pos. pred. val. = 0.746,  95% confidence interval = 0.181
+Mean AUROC = 0.769,  95% confidence interval = 0.099
+
+Logistic Regression with iScaling:
+Averages for all examples 1000 trials with k=0.5
+Mean weight of C1 = 1.07, 95% confidence interval = 0.221
+Mean weight of C2 = -0.066, 95% confidence interval = 0.189
+Mean weight of C3 = -1.003, 95% confidence interval = 0.227
+Mean weight of age = -2.026,  95% confidence interval = 0.677
+Mean weight of Male Gender = -2.402, 95% CI = 0.286
+Mean accuracy = 0.782,  95% confidence interval = 0.1
+Mean sensitivity = 0.698,  95% confidence interval = 0.185
+Mean specificity = 0.841,  95% confidence interval = 0.13
+Mean pos. pred. val. = 0.753,  95% confidence interval = 0.191
+Mean AUROC = 0.769,  95% confidence interval = 0.103
 Confusion Matrix for k=3:
  [[120   0]
  [  0  90]]
