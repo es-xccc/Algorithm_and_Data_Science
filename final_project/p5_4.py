@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
-
+from sklearn.preprocessing import MinMaxScaler
 
 pas_class = []
 pas_age = []
@@ -15,11 +15,12 @@ with open('TitanicPassengers.txt', 'r') as file:
     for line in lines:
         val = line.split(',')
         if val[2] == 'M':
-            pas_gender.append(1)
+            pass
+        else:
+            pas_gender.append(0)
             pas_class.append(int(val[0]))
             pas_age.append(float(val[1]))
             pas_survived.append(int(val[3]))
-        
 
 pas_class_onehot = np.zeros((len(pas_class), max(pas_class)))
 for i, c in enumerate(pas_class):
@@ -39,6 +40,8 @@ optimal_ks = []
 optimal_k = 0.5
 max_accuracy = 0
 accuracies_for_k = {k: [] for k in np.linspace(0, 1, 100)}
+
+scaler = MinMaxScaler()
 
 for _ in range(1000):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -93,13 +96,13 @@ lower_ppv, upper_ppv = np.percentile(ppv, [2.5, 97.5])
 mean_auroc = np.mean(auroc)
 lower_auroc, upper_auroc = np.percentile(auroc, [2.5, 97.5])
 
-print('Logistic Regression with Male and Female Separated:')
-print('Averages for Male examples 1000 trials with k=0.5')
+print('Logistic Regression with Male and Female Separated with zScaling:')
+print('Averages for Female Examples 1000 trials with k=0.5')
 print('Mean weight of C1 = {}, 95% confidence interval = {}'.format(round(mean_weights[0], 3), round(upper_weights[0] - lower_weights[0], 3)))
 print('Mean weight of C2 = {}, 95% confidence interval = {}'.format(round(mean_weights[1], 3), round(upper_weights[1] - lower_weights[1], 3)))
 print('Mean weight of C3 = {}, 95% confidence interval = {}'.format(round(mean_weights[2], 3), round(upper_weights[2] - lower_weights[2], 3)))
 print('Mean weight of age = {},  95% confidence interval = {}'.format(round(mean_weights[3], 3), round(upper_weights[3] - lower_weights[3], 3)))
-print('Mean weight of Male Gender = {}, 95% CI = {}'.format(round(mean_weights[4], 3), round(upper_weights[4] - lower_weights[4], 3)))
+print('Mean weight of Female Gender = {}, 95% CI = {}'.format(round(mean_weights[4], 3), round(upper_weights[4] - lower_weights[4], 3)))
 print('Mean accuracy = {},  95% confidence interval = {}'.format(round(mean_accuracy, 3), round(upper_accuracy - lower_accuracy, 3)))
 print('Mean sensitivity = {},  95% confidence interval = {}'.format(round(mean_sensitivity, 3), round(upper_sensitivity - lower_sensitivity, 3)))
 print('Mean specificity = {},  95% confidence interval = {}'.format(round(mean_specificity, 3), round(upper_specificity - lower_specificity, 3)))

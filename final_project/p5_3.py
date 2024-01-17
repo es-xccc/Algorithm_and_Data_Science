@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
-
+from sklearn.preprocessing import StandardScaler
 
 pas_class = []
 pas_age = []
@@ -39,6 +39,8 @@ optimal_ks = []
 optimal_k = 0.5
 max_accuracy = 0
 accuracies_for_k = {k: [] for k in np.linspace(0, 1, 100)}
+
+scaler = StandardScaler()
 
 for _ in range(1000):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -93,7 +95,7 @@ lower_ppv, upper_ppv = np.percentile(ppv, [2.5, 97.5])
 mean_auroc = np.mean(auroc)
 lower_auroc, upper_auroc = np.percentile(auroc, [2.5, 97.5])
 
-print('Logistic Regression with Male and Female Separated:')
+print('Logistic Regression with Male and Female Separated with zScaling:')
 print('Averages for Male examples 1000 trials with k=0.5')
 print('Mean weight of C1 = {}, 95% confidence interval = {}'.format(round(mean_weights[0], 3), round(upper_weights[0] - lower_weights[0], 3)))
 print('Mean weight of C2 = {}, 95% confidence interval = {}'.format(round(mean_weights[1], 3), round(upper_weights[1] - lower_weights[1], 3)))
