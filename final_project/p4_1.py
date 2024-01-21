@@ -47,10 +47,8 @@ scaler = StandardScaler()
 for _ in range(1000):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-    # Fit on training set only.
     scaler.fit(X_train)
 
-    # Apply transform to both the training set and the test set.
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
 
@@ -127,7 +125,7 @@ plt.hist(optimal_ks, bins=20, range=(0.4, 0.6), edgecolor='black', label='k valu
 plt.xlabel('Threshold Values k')
 plt.ylabel('Number of ks')
 plt.title('Threshold values k for Maximum Accuracies')
-plt.savefig('Threshold values k for Maximum Accuracies.png')
+plt.savefig('p4_1_Threshold values k for Maximum Accuracies.png')
 
 max_accuracies = np.max(accuracies)
 
@@ -136,7 +134,7 @@ plt.hist(accuracies, bins=20, edgecolor='black')
 plt.xlabel('Maximum Accuracies')
 plt.ylabel('Numbers of Maximum Accuracies')
 plt.title('Maximum Accuracies')
-plt.savefig('Maximum Accuracies.png')
+plt.savefig('p4_1_Maximum Accuracies.png')
 
 k_values = np.linspace(0.4, 0.6, 20)
 accuracies = np.zeros(len(k_values))
@@ -165,4 +163,4 @@ plt.xlabel('Threshold Values k')
 plt.ylabel('Accuracy')
 plt.title('Mean Accuracies for Different Threshold Values')
 plt.legend()
-plt.savefig('Mean Accuracies for Different Threshold Values.png')
+plt.savefig('p4_1_Mean Accuracies for Different Threshold Values.png')

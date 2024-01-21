@@ -10,7 +10,7 @@ Mean sensitivity = 0.704,  95% confidence interval = 0.177
 Mean specificity = 0.838,  95% confidence interval = 0.127
 Mean pos. pred. val. = 0.75,  95% confidence interval = 0.181
 Mean AUROC = 0.771,  95% confidence interval = 0.105
-
+--------------------------------------------------------------------
 Logistic Regression with zScaling:
 Averages for all examples 1000 trials with k=0.5
 Mean weight of C1 = 0.563, 95% confidence interval = 0.118
@@ -36,7 +36,7 @@ Mean sensitivity = 0.698,  95% confidence interval = 0.185
 Mean specificity = 0.841,  95% confidence interval = 0.13
 Mean pos. pred. val. = 0.753,  95% confidence interval = 0.191
 Mean AUROC = 0.769,  95% confidence interval = 0.103
-
+--------------------------------------------------------------------
 Logistic Regression with Male and Female Separated:
 Averages for Male examples 1000 trials with k=0.5
 Mean weight of C1 = 1.104, 95% confidence interval = 0.33
@@ -87,52 +87,39 @@ Mean sensitivity = 0.856,  95% confidence interval = 0.278
 Mean specificity = 0.516,  95% confidence interval = 0.667
 Mean pos. pred. val. = 0.844,  95% confidence interval = 0.236
 Mean AUROC = 0.686,  95% confidence interval = 0.259
+--------------------------------------------------------------------
+Results for k=3:
+Cross Validation Accuracy: 0.761
+Test Accuracy: 0.705
+Confusion Matrix for k=3:
+[[101  31]
+ [ 31  47]]
 
-Confusion Matrix for k=3:
- [[120   0]
- [  0  90]]
-Accuracy = 1.000
-Sensitivity = 1.000
-Specificity = 1.000
-Pos. Pred. Val. = 1.000
-Confusion Matrix for k=3:
- [[83 37]
- [52 38]]
-Accuracy = 0.576
-Sensitivity = 0.422
-Specificity = 0.692
-Pos. Pred. Val. = 0.507
-K for Maximum Accuracy is: 16
+K for Maximum Accuracy is: 13
 Confusion Matrix for optimal k:
- [[103  17]
- [ 69  21]]
-Accuracy = 0.590
-Sensitivity = 0.233
-Specificity = 0.858
-Pos. Pred. Val. = 0.553
-Try to predict male and female separately and combined with k=3:
-For Male:
-Confusion Matrix is:
-[[88 10]
- [25  9]]
-Accuracy = 0.7348484848484849
-Sensitivity = 0.2647058823529412
-Specificity = 0.8979591836734694
-Pos. Pred. Val. = 0.47368421052631576
-Try to predict male and female separately and combined with k=3:
-For Female:
-Confusion Matrix is:
-[[ 7  7]
- [ 3 61]]
-Accuracy = 0.8717948717948718
-Sensitivity = 0.953125
-Specificity = 0.5
-Pos. Pred. Val. = 0.8970588235294118
-For Combined:
-Confusion Matrix is:
-[[21  7]
- [61 67]]
-Accuracy = 0.5641025641025641
-Sensitivity = 0.5234375
-Specificity = 0.75
-Pos. Pred. Val. = 0.8920454545454546
+[[112  20]
+ [ 33  45]]
+Predictions with maximum accuracy k: 13
+Cross Validation Accuracies is: 0.748
+Predicted Accuracies is: 0.748
+--------------------------------------------------------------------
+For male:
+[[95  6]
+ [23  8]]
+Accuracy: 0.78
+Sensitivity: 0.258
+Specificity: 0.941
+Pos. Pred. Val.: 0.571
+For female:
+[[10  9]
+ [10 49]]
+Accuracy: 0.756
+Sensitivity: 0.831
+Specificity: 0.526
+Pos. Pred. Val.: 0.845
+Combined Predictions Statistics:
+TP,FP,TN,FN =  57 15 105 33
+Accuracy: 0.771
+Sensitivity: 0.633
+Specificity: 0.875
+Pos. Pred. Val.: 0.792

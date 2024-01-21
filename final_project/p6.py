@@ -1,14 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.neighbors import KNeighborsClassifier
 
 pas_class = []
 pas_age = []
 pas_survived = []
+pas_gender = []
 with open('TitanicPassengers.txt', 'r') as file:
     next(file)
     lines = file.readlines()
@@ -16,69 +15,62 @@ with open('TitanicPassengers.txt', 'r') as file:
         val = line.split(',')
         pas_class.append(int(val[0]))
         pas_age.append(float(val[1]))
+        pas_gender.append(1 if val[2] == 'M' else 0)
         pas_survived.append(int(val[3]))
 
-
-X = np.array([pas_class, pas_age]).T
+X = np.array([pas_class, pas_age, pas_gender]).T
 y = np.array(pas_survived)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-knn = KNeighborsClassifier(n_neighbors=3)
-
-knn.fit(X_train, y_train)
-
-y_pred = knn.predict(X_test)
-
-cm = confusion_matrix(y_test, y_pred)
-print("Confusion Matrix for k=3:\n", cm)
-
-accuracy = accuracy_score(y_test, y_pred)
-sensitivity = recall_score(y_test, y_pred)
-specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
-ppv = precision_score(y_test, y_pred)
-
-print(f"Accuracy = {accuracy:.3f}\nSensitivity = {sensitivity:.3f}\nSpecificity = {specificity:.3f}\nPos. Pred. Val. = {ppv:.3f}")
-
-k_values = list(range(1, 31))
+k_values = list(range(1, 26, 2))
 cv_scores = []
+test_scores = []
+
+k_values = list(range(1, 26, 2))
+cv_scores = []
+test_scores = []
 
 for k in k_values:
     knn = KNeighborsClassifier(n_neighbors=k)
     scores = cross_val_score(knn, X_train, y_train, cv=10, scoring='accuracy')
     cv_scores.append(scores.mean())
+    
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    test_score = accuracy_score(y_test, y_pred)
+    test_scores.append(test_score)
 
-optimal_k = k_values[cv_scores.index(max(cv_scores))]
+    if k == 3:
+        print("Results for k=3:")
+        print("Cross Validation Accuracy:", round(scores.mean(), 3))
+        print("Test Accuracy:", round(test_score, 3))
+        C_M = confusion_matrix(y_test, y_pred)
+        print("Confusion Matrix for k=3:")
+        print(C_M)
+        print()
+
+optimal_k = k_values[test_scores.index(max(test_scores))]
 print("K for Maximum Accuracy is:", optimal_k)
 
 knn = KNeighborsClassifier(n_neighbors=optimal_k)
-
 knn.fit(X_train, y_train)
-
 y_pred = knn.predict(X_test)
 
-cm = confusion_matrix(y_test, y_pred)
-print("Confusion Matrix for optimal k:\n", cm)
+C_M = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix for optimal k:")
+print(C_M)
 
-accuracy = accuracy_score(y_test, y_pred)
-sensitivity = recall_score(y_test, y_pred)
-specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
-ppv = precision_score(y_test, y_pred)
-
-print(f"Accuracy = {accuracy:.3f}\nSensitivity = {sensitivity:.3f}\nSpecificity = {specificity:.3f}\nPos. Pred. Val. = {ppv:.3f}")
-
-real_pred_scores = []
-for k in k_values:
-    knn = KNeighborsClassifier(n_neighbors=k)
-    knn.fit(X_train, y_train)
-    y_pred = knn.predict(X_test)
-    real_pred_scores.append(accuracy_score(y_test, y_pred))
+print("Predictions with maximum accuracy k:", optimal_k)
+print("Cross Validation Accuracies is:", round(cv_scores[k_values.index(optimal_k)], 3))
+print("Predicted Accuracies is:", round(test_scores[k_values.index(optimal_k)], 3))
 
 plt.figure(figsize=(10, 6))
-plt.plot(k_values, cv_scores, marker='o', linestyle='-', color='b', label='n-fold cross validation')
-plt.plot(k_values, real_pred_scores, marker='s', linestyle='--', color='r', label='Real Prediction')
+plt.plot(k_values, cv_scores, label='n-fold cross validation')
+plt.plot(k_values, test_scores, label='Real Prediction')
 plt.xlabel('k values for KNN Regression')
 plt.ylabel('Accuracy')
+plt.xticks(range(1, 26, 2))
 plt.title('Average Accuracy vs k (10 folds)')
 plt.legend()
 plt.savefig('Average Accuracy vs k (10 folds).png')

@@ -1,112 +1,85 @@
-import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score, accuracy_score, recall_score, precision_score, confusion_matrix
-from sklearn.preprocessing import StandardScaler
 
-male_class = []
-male_age = []
-male_survived = []
-female_class = []
-female_age = []
-female_survived = []
+pas_class = []
+pas_age = []
+pas_survived = []
+pas_gender = []
 with open('TitanicPassengers.txt', 'r') as file:
     next(file)
     lines = file.readlines()
     for line in lines:
         val = line.split(',')
-        if(val[2] == 'M'):
-            male_class.append(val[0])
-            male_age.append(val[1])
-            male_survived.append(val[3])
-        else:
-            female_class.append(val[0])
-            female_age.append(val[1])
-            female_survived.append(val[3])
+        pas_class.append(int(val[0]))
+        pas_age.append(float(val[1]))
+        pas_gender.append(1 if val[2] == 'M' else 0)
+        pas_survived.append(int(val[3]))
 
-male_class = np.array(male_class, dtype=int)
-male_age = np.array(male_age, dtype=float)
-male_survived = np.array(male_survived, dtype=int)
+X = np.array([pas_class, pas_age, pas_gender]).T
+y = np.array(pas_survived)
 
-X_male = np.vstack((male_class, male_age)).T
-y_male = male_survived
+X_male = X[X[:, 2] == 1]
+y_male = y[X[:, 2] == 1]
+X_female = X[X[:, 2] == 0]
+y_female = y[X[:, 2] == 0]
 
-X_train, X_test, y_train, y_test = train_test_split(X_male, y_male, test_size=0.2, random_state=42)
+k = 3
 
-knn = KNeighborsClassifier(n_neighbors=3)
-knn.fit(X_train, y_train)
+X_train_male, X_test_male, y_train_male, y_test_male = train_test_split(X_male, y_male, test_size=0.2)
+knn_male = KNeighborsClassifier(n_neighbors=k)
+knn_male.fit(X_train_male, y_train_male)
+y_pred_male = knn_male.predict(X_test_male)
 
-y_pred = knn.predict(X_test)
+C_M_male = confusion_matrix(y_test_male, y_pred_male)
+print("For male:")
+print(C_M_male)
 
-cm = confusion_matrix(y_test, y_pred)
-accuracy = accuracy_score(y_test, y_pred)
-sensitivity = recall_score(y_test, y_pred)
-specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
-ppv = precision_score(y_test, y_pred)
+accuracy_male = round((C_M_male[0][0] + C_M_male[1][1]) / np.sum(C_M_male), 3)
+sensitivity_male = round(C_M_male[1][1] / (C_M_male[1][1] + C_M_male[1][0]), 3)
+specificity_male = round(C_M_male[0][0] / (C_M_male[0][0] + C_M_male[0][1]), 3)
+ppv_male = round(C_M_male[1][1] / (C_M_male[1][1] + C_M_male[0][1]), 3)
 
-print('Try to predict male and female separately and combined with k=3:')
-print('For Male:')
-print(f"Confusion Matrix is: \n{cm}")
-print(f"Accuracy = {accuracy}")
-print(f"Sensitivity = {sensitivity}")
-print(f"Specificity = {specificity}")
-print(f"Pos. Pred. Val. = {ppv}")
+print("Accuracy:", accuracy_male)
+print("Sensitivity:", sensitivity_male)
+print("Specificity:", specificity_male)
+print("Pos. Pred. Val.:", ppv_male)
 
-female_class = np.array(female_class, dtype=int)
-female_age = np.array(female_age, dtype=float)
-female_survived = np.array(female_survived, dtype=int)
 
-X_female = np.vstack((female_class, female_age)).T
-y_female = female_survived
-X_train, X_test, y_train, y_test = train_test_split(X_female, y_female, test_size=0.2, random_state=42)
+X_train_female, X_test_female, y_train_female, y_test_female = train_test_split(X_female, y_female, test_size=0.2)
+knn_female = KNeighborsClassifier(n_neighbors=k)
+knn_female.fit(X_train_female, y_train_female)
+y_pred_female = knn_female.predict(X_test_female)
 
-knn = KNeighborsClassifier(n_neighbors=3)
-knn.fit(X_train, y_train)
+C_M_female = confusion_matrix(y_test_female, y_pred_female)
+print("For female:")
+print(C_M_female)
 
-y_pred = knn.predict(X_test)
-cm = confusion_matrix(y_test, y_pred)
-accuracy = accuracy_score(y_test, y_pred)
-sensitivity = recall_score(y_test, y_pred)
-specificity = cm[0, 0] / (cm[0, 0] + cm[0, 1])
-ppv = precision_score(y_test, y_pred)
+accuracy_female = round((C_M_female[0][0] + C_M_female[1][1]) / np.sum(C_M_female), 3)
+sensitivity_female = round(C_M_female[1][1] / (C_M_female[1][1] + C_M_female[1][0]), 3)
+specificity_female = round(C_M_female[0][0] / (C_M_female[0][0] + C_M_female[0][1]), 3)
+ppv_female = round(C_M_female[1][1] / (C_M_female[1][1] + C_M_female[0][1]), 3)
 
-print('Try to predict male and female separately and combined with k=3:')
-print('For Female:')
-print(f"Confusion Matrix is: \n{cm}")
-print(f"Accuracy = {accuracy}")
-print(f"Sensitivity = {sensitivity}")
-print(f"Specificity = {specificity}")
-print(f"Pos. Pred. Val. = {ppv}")
+print("Accuracy:", accuracy_female)
+print("Sensitivity:", sensitivity_female)
+print("Specificity:", specificity_female)
+print("Pos. Pred. Val.:", ppv_female)
 
-knn.fit(X_female, y_female)
-y_pred_female = knn.predict(X_test)
+truePos_combined = C_M_male[1][1] + C_M_female[1][1]
+falsePos_combined = C_M_male[0][1] + C_M_female[0][1]
+trueNeg_combined = C_M_male[0][0] + C_M_female[0][0]
+falseNeg_combined = C_M_male[1][0] + C_M_female[1][0]
 
-cm_female = confusion_matrix(y_test, y_pred_female)
-accuracy_female = accuracy_score(y_test, y_pred_female)
-sensitivity_female = recall_score(y_test, y_pred_female)
-specificity_female = cm_female[0, 0] / (cm_female[0, 0] + cm_female[0, 1])
-ppv_female = precision_score(y_test, y_pred_female)
+print("Combined Predictions Statistics:")
+print('TP,FP,TN,FN = ', truePos_combined, falsePos_combined, trueNeg_combined, falseNeg_combined)
 
-knn.fit(X_male, y_male)
-y_pred_male = knn.predict(X_test)
+accuracy_combined = round((trueNeg_combined + truePos_combined) / (truePos_combined + falsePos_combined + trueNeg_combined + falseNeg_combined), 3)
+sensitivity_combined = round(truePos_combined / (truePos_combined + falseNeg_combined), 3)
+specificity_combined = round(trueNeg_combined / (trueNeg_combined + falsePos_combined), 3)
+ppv_combined = round(truePos_combined / (truePos_combined + falsePos_combined), 3)
 
-cm_male = confusion_matrix(y_test, y_pred_male)
-accuracy_male = accuracy_score(y_test, y_pred_male)
-sensitivity_male = recall_score(y_test, y_pred_male)
-specificity_male = cm_male[0, 0] / (cm_male[0, 0] + cm_male[0, 1])
-ppv_male = precision_score(y_test, y_pred_male)
-
-cm_combined = cm_female + cm_male
-accuracy_combined = (accuracy_female + accuracy_male) / 2
-sensitivity_combined = (sensitivity_female + sensitivity_male) / 2
-specificity_combined = (specificity_female + specificity_male) / 2
-ppv_combined = (ppv_female + ppv_male) / 2
-
-print('For Combined:')
-print(f"Confusion Matrix is: \n{cm_combined}")
-print(f"Accuracy = {accuracy_combined}")
-print(f"Sensitivity = {sensitivity_combined}")
-print(f"Specificity = {specificity_combined}")
-print(f"Pos. Pred. Val. = {ppv_combined}")
+print("Accuracy:", accuracy_combined)
+print("Sensitivity:", sensitivity_combined)
+print("Specificity:", specificity_combined)
+print("Pos. Pred. Val.:", ppv_combined)
